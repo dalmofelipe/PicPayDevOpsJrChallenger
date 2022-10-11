@@ -81,6 +81,85 @@ picpaydevopsjrchallenger-reader-1  |    want (string)
 <br>
 
 
+
+<br>
+
+
+## COMMIT #2
+
+### CORREÇÃO NO CÓDIGO DO READER 
+
+No serviço READER foi mantido somente a "chave" de armazenamento do redis, como parametro do client.Get(). Atualmente o client.Get() suporta uma string como parametro de entrada.
+
+```golang
+key := client.Get("SHAREDKEY")
+```
+
+```dockerfile
+
+docker compose build
+
+docker compose up
+
+```
+
+### RESULTADO
+
+READER reponseu ao healthcheck e não exibiu mais erros
+
+```bash
+
+### READER GOLANG 8080
+GET http://localhost:8080/health HTTP/1.1
+
+
+HTTP/1.1 200 OK
+Vary: Origin
+Date: Tue, 11 Oct 2022 02:34:22 GMT
+Content-Length: 2
+Content-Type: text/plain; charset=utf-8
+Connection: close
+
+up
+
+```
+<br>
+
+### PORTAS DO FRONTEND
+
+No 'help' do da lib 'serve', informa que por padrão, o 'serve' sobe o projeto na porta 3000.
+
+> By default, serve will listen on 0.0.0.0:3000 and serve the
+> 
+> current working directory on that address.
+
+
+Também é possível observar a option `-p [NUMERO PORTA]` onde podemos espeficar uma porta para o serve. Assim, foi adicionado o paramentro `-p 5000` no script 'start' do `package.json`.
+
+
+```dockerfile
+
+docker compose build
+
+docker compose up
+
+```
+
+### RESULTADO
+
+TUDO FUNCIONANDO, ao acessar raiz do localhost:5000 é exibido um status "UP" em verde dos healthchecks do reader e writer. Também é já é possível publicar um mensagem no menu WRITER, e apos realizar o reload da página, a mensagem pode ser lida no menu READER
+
+```bash
+
+picpaydevopsjrchallenger-web-1     | INFO: Accepting connections at http://localhost:5000.
+picpaydevopsjrchallenger-writer-1  | 172.18.0.1 - - [11/Oct/2022 02:49:32] "OPTIONS /health HTTP/1.1" 200 -
+up
+
+```
+<br>
+
+---
+
 **Limpando tudo**
 
 ```bash
