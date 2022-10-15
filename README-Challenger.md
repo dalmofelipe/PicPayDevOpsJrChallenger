@@ -146,18 +146,8 @@ picpaydevopsjrchallenger-writer-1  | 172.18.0.1 - - [11/Oct/2022 02:49:32] "OPTI
 up
 
 ```
-<br>
 
----
-
-**LIMPANDO TUDO CONTAINERS E IMAGENS**
-
-```bash
-docker container rm picpaydevopsjrchallenger-web-1 picpaydevopsjrchallenger-redis-1 picpaydevopsjrchallenger-reader-1 picpaydevopsjrchallenger-writer-1 && docker image rm picpaydevopsjrchallenger-web:latest picpaydevopsjrchallenger-reader:latest picpaydevopsjrchallenger-writer:latest
-```
-
-
-## COMMIT #3 - ALPINEZANDO O WRITER
+## COMMIT #3 - REFATORANDO O WRITER
 
 #### DOCKERFILE
 
@@ -168,3 +158,24 @@ Utilizei o 'atalho' . do WORKDIR no comando ADD
 Gerado o manifesto de depedências `requirements.txt` para build. No build o pip é atualizado, instala as dependências e limpa o cache dessas operações.
 
 Build da imagem do WRITE com a tag dalmofelipe/alpyne-writer enviada para o docker hub, para futuros deploys.
+
+
+## COMMIT #4 - REAFATORANDO O READER
+
+#### DOCKERFILE
+
+Por meio da técnica multistage build, foi utilizado a imagem do golang-alpine, para realizar o build do executável do projeto e alpine pura para servir o serviço de READER. 
+
+A imagem final ficou com 6MB de tamanho, gerando containers que ocupam 12MB. 
+
+Também foi armazenada no docker hub com a tag `dalmofelipe/algone-reader:1.0.0`  
+
+<br>
+
+---
+
+**LIMPANDO TUDO CONTAINERS E IMAGENS**
+
+```bash
+docker container rm picpaydevopsjrchallenger-web-1 picpaydevopsjrchallenger-redis-1 picpaydevopsjrchallenger-reader-1 picpaydevopsjrchallenger-writer-1 && docker image rm picpaydevopsjrchallenger-web:latest picpaydevopsjrchallenger-reader:latest picpaydevopsjrchallenger-writer:latest
+```

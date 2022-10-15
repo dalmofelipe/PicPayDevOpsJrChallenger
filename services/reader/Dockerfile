@@ -1,6 +1,13 @@
-FROM golang:1.18
-WORKDIR /go/src/github.com/PicPay/picpay-jr-devops-challenge/services/go
-ADD . /go/src/github.com/PicPay/picpay-jr-devops-challenge/services/go
-RUN go mod tidy
+FROM golang:1.18.7-alpine3.16 as builder
+WORKDIR /builder
+ADD . .
+RUN go mod download
+RUN go build .
+
+# MultStage builder
+FROM alpine:latest  
+RUN apk --no-cache add ca-certificates
+WORKDIR /app
+COPY --from=builder /builder/picpay.devops.dalmofelipe ./main
 EXPOSE 8080
-CMD ["go","run","main.go"]
+CMD ["./main"]
